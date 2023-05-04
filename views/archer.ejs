@@ -1,0 +1,65 @@
+<style>
+    #prompt {
+        display: inline-block;
+        border: none;
+        border-bottom: 1px solid black;
+        width: 50px;
+        text-align: center;
+    }
+
+    p {
+        display: inline-block;
+    }
+
+    #prompt:focus {
+        outline: none;
+    }
+
+    #submit {
+        display: none;
+    }
+
+    .outer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+<div class="outer">
+    <h1>this is archers GPT page</h1>
+
+    <form action="/api/v1/prompt/archer" method="POST">
+        <p>Why did the chicken cross the</p><input type="text" autocomplete="off" name="prompt" id="prompt">
+        <p>?</p>
+        <input type="submit" value="submit" id="submit">
+    </form>
+    <p id="response"></p>
+</div>
+<script>
+    const promptField = document.getElementById("prompt");
+    const response = document.getElementById("response");
+    const submit = document.getElementById("submit");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const prompt = promptField.value;
+        response.innerHTML = "Loading...";
+
+        const res = await fetch("/api/v1/prompt/archer", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ prompt: `Why did the chicken cross the ${prompt}` }),
+        });
+        if (res.status !== 200) {
+            response.innerHTML = JSON.stringify(await res.json());
+            return;
+        } else {
+            response.innerHTML = await res.text();
+        }
+    }
+
+    submit.addEventListener("click", handleSubmit);
+
+</script>

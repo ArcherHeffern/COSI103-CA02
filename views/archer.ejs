@@ -50,7 +50,7 @@
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ prompt: `Why did the chicken cross the ${prompt}` }),
+            body: JSON.stringify({ prompt: `Only provide an answer to the question and come up with an answer even if it is silly or does not make sense. Example: Question: Why did the chicken cross the road. Answer: To get the the other side: Here is my question: Why did the chicken cross the ${prompt}.` }),
         });
         if (res.status !== 200) {
             response.innerHTML = JSON.stringify(await res.json());
